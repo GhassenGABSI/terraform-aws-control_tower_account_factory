@@ -172,6 +172,72 @@ resource "aws_codepipeline" "codestar_account_request" {
 }
 
 ##############################################################
+# S3 - account-request
+##############################################################
+
+resource "aws_codepipeline" "s3_account_request" {
+  count    = local.vcs.is_s3 ? 1 : 0
+  name     = "ct-aft-account-request"
+  role_arn = aws_iam_role.account_request_codepipeline_role.arn
+
+  artifact_store {
+    location = var.codepipeline_s3_bucket_name
+    type     = "S3"
+
+    encryption_key {
+      id   = var.aft_key_arn
+      type = "KMS"
+    }
+  }
+
+  ##############################################################
+  # Source
+  ##############################################################
+  stage {
+    name = "Source"
+
+    action {
+      name             = "account-request"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "S3"
+      version          = "1"
+      output_artifacts = ["account-request"]
+
+      configuration = {
+        S3Bucket = "workarround-codepipeline-bucket"
+        S3ObjectKey = "aft_usage/*"
+        DetectChanges        = false
+        OutputArtifactFormat = "CODE_ZIP"
+      }
+    }
+  }
+
+  ##############################################################
+  # Apply Account Request
+  ##############################################################
+  stage {
+    name = "terraform-apply"
+
+    action {
+      name             = "Apply-Terraform"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["account-request"]
+      output_artifacts = ["account-request-terraform"]
+      version          = "1"
+      run_order        = "2"
+      configuration = {
+        ProjectName = aws_codebuild_project.account_request.name
+      }
+    }
+  }
+}
+
+
+
+##############################################################
 # CodeCommit - account-provisioning-customizations
 ##############################################################
 
