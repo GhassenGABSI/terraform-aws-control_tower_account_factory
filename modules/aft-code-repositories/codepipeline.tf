@@ -111,7 +111,7 @@ resource "aws_cloudwatch_event_target" "account_request" {
 ##############################################################
 
 resource "aws_codepipeline" "codestar_account_request" {
-  count    = local.vcs.is_codecommit && local.vcs.is_s3 ? 0 : 1
+  count    = local.vcs.is_codecommit || local.vcs.is_s3 ? 0 : 1
   name     = "ct-aft-account-request"
   role_arn = aws_iam_role.account_request_codepipeline_role.arn
 
@@ -308,7 +308,7 @@ resource "aws_codepipeline" "codecommit_account_provisioning_customizations" {
 ##############################################################
 
 resource "aws_codepipeline" "codestar_account_provisioning_customizations" {
-  count    = local.vcs.is_codecommit && local.vcs.is_s3 ? 0 : 1
+  count    = local.vcs.is_codecommit || local.vcs.is_s3 ? 0 : 1
   name     = "ct-aft-account-provisioning-customizations"
   role_arn = aws_iam_role.account_provisioning_customizations_codepipeline_role.arn
 
