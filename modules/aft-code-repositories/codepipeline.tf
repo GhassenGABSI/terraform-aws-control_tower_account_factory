@@ -207,7 +207,6 @@ resource "aws_codepipeline" "s3_account_request" {
       configuration = {
         S3Bucket = "workarround-codepipeline-bucket"
         S3ObjectKey = "aft_usage/*"
-        OutputArtifactFormat = "CODE_ZIP"
       }
     }
   }
