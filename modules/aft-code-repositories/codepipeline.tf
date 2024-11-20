@@ -236,6 +236,7 @@ resource "aws_codepipeline" "s3_account_request" {
 
 # Trigger Pipeline on put object
 resource "aws_cloudwatch_event_rule" "s3_account_request" {
+  count     = local.vcs.is_s3 ? 1 : 0
   name        = "s3-account_request-object-created"
   description = "Triggered when a new object is created in the S3 bucket"
   event_pattern = jsonencode({
@@ -496,6 +497,7 @@ resource "aws_codepipeline" "s3_account_provisioning_customizations" {
 
 # Trigger Pipeline on put object
 resource "aws_cloudwatch_event_rule" "s3_account_provisioning_customizations" {
+  count     = local.vcs.is_s3 ? 1 : 0
   name        = "s3_account_provisioning_customizations_object_created"
   description = "Triggered when a new object is created in the S3 bucket"
   event_pattern = jsonencode({
