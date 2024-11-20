@@ -119,13 +119,13 @@ resource "time_sleep" "iam_eventual_consistency" {
 # CloudWatch Events Role
 
 resource "aws_iam_role" "cloudwatch_events_codepipeline_role" {
-  count              = local.vcs.is_codecommit || local.vcs.is_s3 ? 1 : 0
+  count              = local.vcs.is_codecommit ? 1 : 0
   name               = "ct-aft-cwe-codepipeline-role"
   assume_role_policy = templatefile("${path.module}/iam/trust-policies/events.tpl", { none = "none" })
 }
 
 resource "aws_iam_role_policy" "cloudwatch_events_codepipeline_role" {
-  count = local.vcs.is_codecommit || local.vcs.is_s3 ? 1 : 0
+  count = local.vcs.is_codecommit ? 1 : 0
   name  = "ct-aft-cwe-codepipeline-role-policy"
   role  = aws_iam_role.cloudwatch_events_codepipeline_role[0].id
 
@@ -135,5 +135,27 @@ resource "aws_iam_role_policy" "cloudwatch_events_codepipeline_role" {
     account_id                                = data.aws_caller_identity.current.account_id
     account_request_pipeline_name             = aws_codepipeline.codecommit_account_request[0].name
     provisioning_customizations_pipeline_name = aws_codepipeline.codecommit_account_provisioning_customizations[0].name
+  })
+}
+
+# S3 CloudWatch Events Role
+
+resource "aws_iam_role" "s3_cloudwatch_events_codepipeline_role" {
+  count              = local.vcs.is_s3 ? 1 : 0
+  name               = "ct-aft-cwe-s3-codepipeline-role"
+  assume_role_policy = templatefile("${path.module}/iam/trust-policies/events.tpl", { none = "none" })
+}
+
+resource "aws_iam_role_policy" "s3_cloudwatch_events_codepipeline_role" {
+  count = local.vcs.is_s3 ? 1 : 0
+  name  = "ct-aft-cwe-s3-codepipeline-role-policy"
+  role  = aws_iam_role.s3_cloudwatch_events_codepipeline_role[0].id
+
+  policy = templatefile("${path.module}/iam/role-policies/ct_aft_cwe_policy.tpl", {
+    data_aws_partition_current_partition      = data.aws_partition.current.partition
+    region                                    = data.aws_region.current.name
+    account_id                                = data.aws_caller_identity.current.account_id
+    account_request_pipeline_name             = aws_codepipeline.s3_account_request[0].name
+    provisioning_customizations_pipeline_name = aws_codepipeline.s3_account_provisioning_customizations[0].name
   })
 }
