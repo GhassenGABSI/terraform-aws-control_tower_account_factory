@@ -101,3 +101,19 @@ variable "global_codebuild_timeout" {
 variable "aft_enable_vpc" {
   type = bool
 }
+
+variable "s3_account_request_bucket" {
+  type = string
+}
+
+variable "s3_account_request_bucket_object_key" {
+  type = string
+}
+
+variable "s3_account_provisioning_customizations_bucket" {
+  type = string
+}
+
+variable "s3_account_provisioning_customizations_bucket_object_key" {
+  type = string
+}

@@ -205,8 +205,9 @@ resource "aws_codepipeline" "s3_account_request" {
       output_artifacts = ["account-request"]
 
       configuration = {
-        S3Bucket = "workarround-codepipeline-bucket"
-        S3ObjectKey = "aft_usage/*"
+        S3Bucket = var.s3_account_request_bucket
+        S3ObjectKey = var.s3_account_request_bucket_object_key
+        PollForSourceChanges = true
       }
     }
   }
@@ -231,6 +232,29 @@ resource "aws_codepipeline" "s3_account_request" {
       }
     }
   }
+}
+
+# Trigger Pipeline on put object
+resource "aws_cloudwatch_event_rule" "s3_account_request" {
+  name        = "s3-account_request-object-created"
+  description = "Triggered when a new object is created in the S3 bucket"
+  event_pattern = jsonencode({
+    "source"      = ["aws.s3"],
+    "detail-type" = ["Object Created"],
+    "detail" = {
+      "bucket" = {
+        "name" = [var.s3_account_request_bucket]
+      }
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "s3_account_request" {
+  count     = local.vcs.is_s3 ? 1 : 0
+  target_id = "codepipeline"
+  rule      = aws_cloudwatch_event_rule.s3_account_request[0].name
+  arn       = aws_codepipeline.s3_account_request[0].arn
+  role_arn  = aws_iam_role.cloudwatch_events_codepipeline_role[0].arn
 }
 
 
@@ -406,3 +430,90 @@ resource "aws_cloudwatch_event_target" "account_provisioning_customizations" {
   arn       = aws_codepipeline.codecommit_account_provisioning_customizations[0].arn
   role_arn  = aws_iam_role.cloudwatch_events_codepipeline_role[0].arn
 }
+
+##############################################################
+# S3 - account_provisioning_customizations
+##############################################################
+
+resource "aws_codepipeline" "s3_account_provisioning_customizations" {
+  count    = local.vcs.is_s3 ? 1 : 0
+  name     = "ct-aft-account-provisioning-customizations"
+  role_arn = aws_iam_role.account_provisioning_customizations_codepipeline_role.arn
+
+  artifact_store {
+    location = var.codepipeline_s3_bucket_name
+    type     = "S3"
+
+    encryption_key {
+      id   = var.aft_key_arn
+      type = "KMS"
+    }
+  }
+
+  ##############################################################
+  # Source
+  ##############################################################
+  stage {
+    name = "Source"
+
+    action {
+      name             = "account-provisioning-customizations"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "S3"
+      version          = "1"
+      output_artifacts = ["account-provisioning-customizations"]
+
+      configuration = {
+        S3Bucket = var.s3_account_provisioning_customizations_bucket
+        S3ObjectKey = var.s3_account_provisioning_customizations_bucket_object_key
+        PollForSourceChanges = true
+      }
+    }
+  }
+
+  ##############################################################
+  # Account Provisioning Customizations - Terraform Apply
+  ##############################################################
+  stage {
+    name = "terraform-apply"
+
+    action {
+      name             = "Apply-Terraform"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["account-provisioning-customizations"]
+      output_artifacts = ["account-provisioning-customizations-output"]
+      version          = "1"
+      run_order        = "2"
+      configuration = {
+        ProjectName = aws_codebuild_project.account_provisioning_customizations_pipeline.name
+      }
+    }
+  }
+}
+
+# Trigger Pipeline on put object
+resource "aws_cloudwatch_event_rule" "s3_account_provisioning_customizations" {
+  name        = "s3_account_provisioning_customizations_object_created"
+  description = "Triggered when a new object is created in the S3 bucket"
+  event_pattern = jsonencode({
+    "source"      = ["aws.s3"],
+    "detail-type" = ["Object Created"],
+    "detail" = {
+      "bucket" = {
+        "name" = [var.s3_account_provisioning_customizations_bucket]
+      }
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "s3_account_provisioning_customizations" {
+  count     = local.vcs.is_s3 ? 1 : 0
+  target_id = "codepipeline"
+  rule      = aws_cloudwatch_event_rule.s3_account_provisioning_customizations[0].name
+  arn       = aws_codepipeline.s3_account_provisioning_customizations[0].arn
+  role_arn  = aws_iam_role.cloudwatch_events_codepipeline_role[0].arn
+}
+

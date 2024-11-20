@@ -14,6 +14,7 @@ resource "aws_iam_role_policy" "account_request_codepipeline_policy" {
 
   policy = templatefile("${path.module}/iam/role-policies/ct_aft_account_request_codepipeline_policy.tpl", {
     aws_s3_bucket_aft_codepipeline_customizations_bucket_arn = var.codepipeline_s3_bucket_arn
+    aws_s3_bucket_aft_account_request_bucket_arn             = data.aws_s3_bucket.s3_account_request_bucket.arn
     data_aws_partition_current_partition                     = data.aws_partition.current.partition
     data_aws_region_current_name                             = data.aws_region.current.name
     data_aws_caller_identity_current_account_id              = data.aws_caller_identity.current.account_id
@@ -32,6 +33,7 @@ resource "aws_iam_role_policy" "account_provisioning_customizations_codepipeline
 
   policy = templatefile("${path.module}/iam/role-policies/ct_aft_account_provisioning_customizations_codepipeline_policy.tpl", {
     aws_s3_bucket_aft_codepipeline_customizations_bucket_arn = var.codepipeline_s3_bucket_arn
+    aws_s3_account_provisioning_customizations_bucket_arn    = data.aws_s3_bucket.s3_account_provisioning_customizations_bucket
     data_aws_partition_current_partition                     = data.aws_partition.current.partition
     data_aws_region_current_name                             = data.aws_region.current.name
     data_aws_caller_identity_current_account_id              = data.aws_caller_identity.current.account_id

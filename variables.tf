@@ -287,6 +287,30 @@ variable "account_provisioning_customizations_repo_branch" {
   }
 }
 
+variable "s3_account_request_bucket" {
+  description = "if s3 is the selected vcs, this is the bucket name which will be as a source code for the account request codepipeline"
+  type = string
+  default = "aft-account-request"
+}
+
+variable "s3_account_request_bucket_object_key" {
+  description = "if s3 is the selected vcs , this is the s3 object key which will be used in the source of the account request codepipeline"
+  type = string
+  default = "aft-account-request.zip"
+}
+
+variable "s3_account_provisioning_customizations_bucket" {
+  description = "if s3 is the selected vcs, this is the bucket name which will be as a source code for the account provisioning customizations codepipeline"
+  type = string
+  default = "aft-account-provisioning-customizations"
+}
+
+variable "s3_account_provisioning_customizations_bucket_object_key" {
+  description = "if s3 is the selected vcs , this is the s3 object key which will be used in the source of the account provisioning customizations codepipeline"
+  type = string
+  default = "aft-account-provisioning-customizations.zip"
+}
+
 #########################################
 # AFT Terraform Distribution Variables
 #########################################
