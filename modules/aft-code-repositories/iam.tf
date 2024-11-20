@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "account_provisioning_customizations_codepipeline
 
   policy = templatefile("${path.module}/iam/role-policies/ct_aft_account_provisioning_customizations_codepipeline_policy.tpl", {
     aws_s3_bucket_aft_codepipeline_customizations_bucket_arn = var.codepipeline_s3_bucket_arn
-    aws_s3_account_provisioning_customizations_bucket_arn    = data.aws_s3_bucket.s3_account_provisioning_customizations_bucket
+    aws_s3_account_provisioning_customizations_bucket_arn    = data.aws_s3_bucket.s3_account_provisioning_customizations_bucket.arn
     data_aws_partition_current_partition                     = data.aws_partition.current.partition
     data_aws_region_current_name                             = data.aws_region.current.name
     data_aws_caller_identity_current_account_id              = data.aws_caller_identity.current.account_id
@@ -119,13 +119,13 @@ resource "time_sleep" "iam_eventual_consistency" {
 # CloudWatch Events Role
 
 resource "aws_iam_role" "cloudwatch_events_codepipeline_role" {
-  count              = local.vcs.is_codecommit ? 1 : 0
+  count              = local.vcs.is_codecommit || local.vcs.is_s3 ? 1 : 0
   name               = "ct-aft-cwe-codepipeline-role"
   assume_role_policy = templatefile("${path.module}/iam/trust-policies/events.tpl", { none = "none" })
 }
 
 resource "aws_iam_role_policy" "cloudwatch_events_codepipeline_role" {
-  count = local.vcs.is_codecommit ? 1 : 0
+  count = local.vcs.is_codecommit || local.vcs.is_s3 ? 1 : 0
   name  = "ct-aft-cwe-codepipeline-role-policy"
   role  = aws_iam_role.cloudwatch_events_codepipeline_role[0].id
 
