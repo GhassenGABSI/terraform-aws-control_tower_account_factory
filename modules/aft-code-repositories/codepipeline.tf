@@ -207,7 +207,7 @@ resource "aws_codepipeline" "s3_account_request" {
       configuration = {
         S3Bucket = var.s3_account_request_bucket
         S3ObjectKey = var.s3_account_request_bucket_object_key
-        PollForSourceChanges = true
+        PollForSourceChanges = false
       }
     }
   }
@@ -468,7 +468,7 @@ resource "aws_codepipeline" "s3_account_provisioning_customizations" {
       configuration = {
         S3Bucket = var.s3_account_provisioning_customizations_bucket
         S3ObjectKey = var.s3_account_provisioning_customizations_bucket_object_key
-        PollForSourceChanges = true
+        PollForSourceChanges = false
       }
     }
   }
