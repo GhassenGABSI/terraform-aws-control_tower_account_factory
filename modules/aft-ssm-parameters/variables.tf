@@ -138,11 +138,27 @@ variable "account_request_repo_branch" {
   type = string
 }
 
+variable "account_request_bucket_name" {
+  type = string
+}
+
+variable "account_request_bucket_object_key" {
+  type = string
+}
+
 variable "account_provisioning_customizations_repo_name" {
   type = string
 }
 
 variable "account_provisioning_customizations_repo_branch" {
+  type = string
+}
+
+variable "account_provisioning_customizations_bucket_name" {
+  type = string
+}
+
+variable "account_provisioning_customizations_bucket_object_key" {
   type = string
 }
 
@@ -214,6 +230,14 @@ variable "global_customizations_repo_branch" {
   type = string
 }
 
+variable "global_customizations_bucket_name" {
+  type = string
+}
+
+variable "global_customizations_bucket_object_key" {
+  type = string
+}
+
 variable "account_customizations_repo_name" {
   type = string
 }
@@ -221,6 +245,15 @@ variable "account_customizations_repo_name" {
 variable "account_customizations_repo_branch" {
   type = string
 }
+
+variable "account_customizations_bucket_name" {
+  type = string
+}
+
+variable "account_customizations_bucket_object_key" {
+  type = string
+}
+
 
 variable "codestar_connection_arn" {
   type = string

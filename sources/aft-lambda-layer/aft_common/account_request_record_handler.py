@@ -152,3 +152,8 @@ class AccountRequestRecordHandler:
             self.handle_customization_request()
         else:
             raise Exception("Unsupported account request")
+
+    def process_request_china(self) -> None:
+        logger.info("Customization request received")
+        self.handle_customization_request()
+

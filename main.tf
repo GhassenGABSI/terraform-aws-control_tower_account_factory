@@ -102,10 +102,10 @@ module "aft_code_repositories" {
   log_group_retention                                      = var.cloudwatch_log_group_retention
   global_codebuild_timeout                                 = var.global_codebuild_timeout
   aft_enable_vpc                                           = var.aft_enable_vpc
-  s3_account_provisioning_customizations_bucket            = var.s3_account_provisioning_customizations_bucket
-  s3_account_provisioning_customizations_bucket_object_key = var.s3_account_provisioning_customizations_bucket_object_key
-  s3_account_request_bucket                                = var.s3_account_request_bucket
-  s3_account_request_bucket_object_key                     = var.s3_account_request_bucket_object_key
+  s3_account_provisioning_customizations_bucket            = var.account_provisioning_customizations_bucket_name
+  s3_account_provisioning_customizations_bucket_object_key = var.account_provisioning_customizations_bucket_object_key
+  s3_account_request_bucket                                = var.account_request_bucket_name
+  s3_account_request_bucket_object_key                     = var.account_request_bucket_object_key
 }
 
 module "aft_customizations" {
@@ -276,4 +276,12 @@ module "aft_ssm_parameters" {
   github_enterprise_url                                       = var.github_enterprise_url
   gitlab_selfmanaged_url                                      = var.gitlab_selfmanaged_url
   aft_metrics_reporting                                       = var.aft_metrics_reporting
+  account_customizations_bucket_name                          = var.account_customizations_bucket_name
+  account_customizations_bucket_object_key                    = var.account_customizations_bucket_object_key
+  account_provisioning_customizations_bucket_name             = var.account_provisioning_customizations_bucket_name
+  account_provisioning_customizations_bucket_object_key       = var.account_provisioning_customizations_bucket_object_key
+  global_customizations_bucket_name                           = var.global_customizations_bucket_name
+  global_customizations_bucket_object_key                     = var.global_customizations_bucket_object_key
+  account_request_bucket_name                                 = var.account_request_bucket_name
+  account_request_bucket_object_key                           = var.account_request_bucket_object_key
 }

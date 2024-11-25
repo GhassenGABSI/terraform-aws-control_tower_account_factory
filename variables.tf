@@ -247,6 +247,18 @@ variable "global_customizations_repo_branch" {
   }
 }
 
+variable "global_customizations_bucket_name" {
+  description = "if s3 is the selected vcs, this is the bucket name for the global customization files."
+  type        = string
+  default     = "aft-global-customizations"
+}
+
+variable "global_customizations_bucket_object_key" {
+  description = "if s3 is the selected vcs, this object key to source global customizations code from"
+  type        = string
+  default     = "aft-global-customizations.zip"
+}
+
 variable "account_customizations_repo_name" {
   description = "Repository name for the account customizations files. For non-CodeCommit repos, name should be in the format of Org/Repo"
   type        = string
@@ -265,6 +277,18 @@ variable "account_customizations_repo_branch" {
     condition     = length(var.account_customizations_repo_branch) > 0
     error_message = "Variable var: account_customizations_repo_branch cannot be empty."
   }
+}
+
+variable "account_customizations_bucket_name" {
+  description = "if s3 is the selected vcs, this the bucket name for the account customizations files."
+  type        = string
+  default     = "aft-account-customizations"
+}
+
+variable "account_customizations_bucket_object_key" {
+  description = "if s3 is the selected vcs, this object key to source account customizations code from"
+  type        = string
+  default     = "aft-account-customizations.zip"
 }
 
 variable "account_provisioning_customizations_repo_name" {
@@ -287,25 +311,25 @@ variable "account_provisioning_customizations_repo_branch" {
   }
 }
 
-variable "s3_account_request_bucket" {
+variable "account_request_bucket_name" {
   description = "if s3 is the selected vcs, this is the bucket name which will be as a source code for the account request codepipeline"
   type = string
   default = "aft-account-request"
 }
 
-variable "s3_account_request_bucket_object_key" {
+variable "account_request_bucket_object_key" {
   description = "if s3 is the selected vcs , this is the s3 object key which will be used in the source of the account request codepipeline"
   type = string
   default = "aft-account-request.zip"
 }
 
-variable "s3_account_provisioning_customizations_bucket" {
+variable "account_provisioning_customizations_bucket_name" {
   description = "if s3 is the selected vcs, this is the bucket name which will be as a source code for the account provisioning customizations codepipeline"
   type = string
   default = "aft-account-provisioning-customizations"
 }
 
-variable "s3_account_provisioning_customizations_bucket_object_key" {
+variable "account_provisioning_customizations_bucket_object_key" {
   description = "if s3 is the selected vcs , this is the s3 object key which will be used in the source of the account provisioning customizations codepipeline"
   type = string
   default = "aft-account-provisioning-customizations.zip"

@@ -4,6 +4,7 @@
 locals {
   vcs = {
     is_codecommit = lower(data.aws_ssm_parameter.vcs_provider.value) == "codecommit" ? true : false
+    is_s3         = lower(data.aws_ssm_parameter.vcs_provider.value) == "s3" ? true : false
   }
 }
 variable "account_id" {

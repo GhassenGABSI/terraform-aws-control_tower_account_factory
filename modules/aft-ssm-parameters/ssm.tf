@@ -298,6 +298,18 @@ resource "aws_ssm_parameter" "account_request_repo_branch" {
   value = var.account_request_repo_branch
 }
 
+resource "aws_ssm_parameter" "account_request_bucket_name" {
+  name  = "/aft/config/account-request/bucket-name"
+  type  = "String"
+  value = var.account_request_bucket_name
+}
+
+resource "aws_ssm_parameter" "account_request_bucket_object_key" {
+  name  = "/aft/config/account-request/bucket_object_key"
+  type  = "String"
+  value = var.account_request_bucket_object_key
+}
+
 resource "aws_ssm_parameter" "global_customizations_repo_name" {
   name  = "/aft/config/global-customizations/repo-name"
   type  = "String"
@@ -308,6 +320,18 @@ resource "aws_ssm_parameter" "global_customizations_repo_branch" {
   name  = "/aft/config/global-customizations/repo-branch"
   type  = "String"
   value = var.global_customizations_repo_branch
+}
+
+resource "aws_ssm_parameter" "global_customizations_bucket_name" {
+  name  = "/aft/config/global-customizations/bucket-name"
+  type  = "String"
+  value = var.global_customizations_bucket_name
+}
+
+resource "aws_ssm_parameter" "global_customizations_bucket_object_keyh" {
+  name  = "/aft/config/global-customizations/bucket-object-key"
+  type  = "String"
+  value = var.global_customizations_bucket_object_key
 }
 
 resource "aws_ssm_parameter" "account_customizations_repo_name" {
@@ -322,6 +346,18 @@ resource "aws_ssm_parameter" "account_customizations_repo_branch" {
   value = var.account_customizations_repo_branch
 }
 
+resource "aws_ssm_parameter" "account_customizations_bucket_name" {
+  name  = "/aft/config/account-customizations/bucket-name"
+  type  = "String"
+  value = var.account_customizations_bucket_name
+}
+
+resource "aws_ssm_parameter" "account_customizations_bucket_object_key" {
+  name  = "/aft/config/account-customizations/bucket-object-key"
+  type  = "String"
+  value = var.account_customizations_bucket_object_key
+}
+
 resource "aws_ssm_parameter" "account_provisioning_customizations_repo_name" {
   name  = "/aft/config/account-provisioning-customizations/repo-name"
   type  = "String"
@@ -332,6 +368,18 @@ resource "aws_ssm_parameter" "account_provisioning_customizations_repo_branch" {
   name  = "/aft/config/account-provisioning-customizations/repo-branch"
   type  = "String"
   value = var.account_provisioning_customizations_repo_branch
+}
+
+resource "aws_ssm_parameter" "account_provisioning_customizations_bucket_name" {
+  name  = "/aft/config/account-provisioning-customizations/bucket-name"
+  type  = "String"
+  value = var.account_provisioning_customizations_bucket_name
+}
+
+resource "aws_ssm_parameter" "account_provisioning_customizations_bucket_object_key" {
+  name  = "/aft/config/account-provisioning-customizations/bucket-object-key"
+  type  = "String"
+  value = var.account_provisioning_customizations_bucket_object_key
 }
 
 resource "aws_ssm_parameter" "codestar_connection_arn" {
