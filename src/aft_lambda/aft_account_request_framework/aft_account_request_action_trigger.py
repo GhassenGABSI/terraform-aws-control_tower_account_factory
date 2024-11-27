@@ -28,7 +28,7 @@ def lambda_handler(event: Dict[str, Any], context: LambdaContext) -> None:
     try:
         record_handler = AccountRequestRecordHandler(auth=auth, event=event)
         logger.info(record_handler.record)
-        record_handler.process_request_chinaÒ()
+        record_handler.process_request_china()
 
     except Exception as error:
         notifications.send_lambda_failure_sns_message(
