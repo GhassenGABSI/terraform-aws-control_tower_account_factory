@@ -29,3 +29,11 @@ data "local_file" "aft_account_customizations_terraform" {
 data "local_file" "aft_create_pipeline" {
   filename = "${path.module}/buildspecs/aft-create-pipeline.yml"
 }
+
+data "aws_s3_bucket" "s3_account_customizations_bucket" {
+  bucket = var.s3_account_customizations_bucket
+}
+
+data "aws_s3_bucket" "s3_global_customizations_bucket" {
+  bucket = var.s3_global_customizations_bucket
+}

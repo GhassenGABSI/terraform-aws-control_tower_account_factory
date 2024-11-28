@@ -10,7 +10,11 @@
       ],
       "Resource": [
         "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}",
-        "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}/*"
+        "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}/*",
+        "${aws_s3_bucket_aft_account_customizations_bucket_arn}",
+        "${aws_s3_bucket_aft_account_customizations_bucket_arn}/*",
+        "${aws_s3_bucket_aft_global_customizations_bucket_arn}",
+        "${aws_s3_bucket_aft_global_customizations_bucket_arn}/*"
       ]
     },
     {

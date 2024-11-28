@@ -119,3 +119,11 @@ variable "lambda_runtime_python_version" {
 variable "aft_enable_vpc" {
   type = bool
 }
+
+variable "s3_global_customizations_bucket" {
+  type = string
+}
+
+variable "s3_account_customizations_bucket" {
+  type = string
+}

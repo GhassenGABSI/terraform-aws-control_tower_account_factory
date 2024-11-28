@@ -142,6 +142,8 @@ module "aft_customizations" {
   global_codebuild_timeout                          = var.global_codebuild_timeout
   lambda_runtime_python_version                     = local.lambda_runtime_python_version
   aft_enable_vpc                                    = var.aft_enable_vpc
+  s3_account_customizations_bucket                  = var.account_customizations_bucket_name
+  s3_global_customizations_bucket                   = var.global_customizations_bucket_name
 }
 
 module "aft_feature_options" {
